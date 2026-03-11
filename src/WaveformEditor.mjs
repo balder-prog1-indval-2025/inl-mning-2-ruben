@@ -1,5 +1,8 @@
+import dft from "./dft.mjs";
+
 export class WaveformEditor {
-  constructor() {
+  constructor(actx) {
+    this.actx = actx;
     this.signal = [];
     this.canvas = document.getElementById("waveform");
     this.ctx = this.canvas.getContext("2d");
@@ -10,6 +13,14 @@ export class WaveformEditor {
     for (let i = 0; i < this.canvas.width; i++) {
       this.signal.push(0);
     }
+
+    this.play_button = document.getElementById("playbutton");
+    this.close_button = document.getElementById("closebutton");
+
+    this.wave;
+    this.osc;
+    this.osc_started = false;
+    this.playing = false;
   }
 
   #setmouseposition(event) {
@@ -102,6 +113,34 @@ export class WaveformEditor {
       document.addEventListener("mouseup", this.#mouseupevent.bind(this));
       document.addEventListener("mousemove", this.#mousemoveevent.bind(this));
     });
+
+    this.play_button.onclick = () => {
+      this.playing = !this.playing;
+      if (this.playing) {
+        this.play_button.textContent = "Stop";
+      } else {
+        this.play_button.textContent = "Preview";
+        if (this.osc && this.osc_started) {
+          this.osc.stop();
+          this.osc.disconnect();
+          this.osc_started = false;
+          return;
+        }
+      }
+      if (this.osc && this.osc_started) {
+        this.osc.stop();
+        this.osc.disconnect();
+        this.osc_started = false;
+      }
+      const { real, imag } = dft(this.getSignal());
+      this.wave = this.actx.createPeriodicWave(real, imag);
+      this.osc = this.actx.createOscillator();
+      this.osc.setPeriodicWave(this.wave);
+      this.osc.frequency.value = 440;
+      this.osc.connect(this.actx.destination);
+      this.osc.start();
+      this.osc_started = true;
+    };
   }
 
   getSignal() {
@@ -113,6 +152,19 @@ export class WaveformEditor {
     if (signal) {
       this.signal = signal;
     }
+    return new Promise((resolve) => {
+      this.close_button.onclick = () => {
+        if (this.osc && this.osc_started) {
+          this.osc.stop();
+          this.osc.disconnect();
+          this.osc_started = false;
+        }
+        this.playing = false;
+        this.play_button.textContent = "Preview";
+        this.close();
+        resolve(this.signal);
+      };
+    });
   }
 
   close() {

@@ -1,0 +1,58 @@
+.Synth {
+  display: flex;
+  flex-direction: column;
+  background-color: #118a7e;
+  padding: 2rem;
+  margin: 10px;
+  border-radius: 15px;
+  border: 5px solid #93e4c1;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.Synth:hover {
+  background-color: #118a7eaa;
+}
+
+.Synth h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.Oscillator {
+  display: flex;
+  flex-direction: column;
+  background-color: #1f6f78;
+  padding: 1rem;
+  margin: 2px;
+  margin-top: 0.6rem;
+  border-radius: 10px;
+  border: 3px solid #93e4c1;
+  color: white;
+  justify-content: center;
+  align-items: center;
+}
+
+.Oscillator button {
+  border: none;
+  background-color: #118a7e;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.Oscillator button:hover {
+  background-color: #118a7eaa;
+}
+
+.selected {
+  background-color: #8a1111;
+}
+
+.selected:hover {
+  background-color: #8a1111d3;
+}

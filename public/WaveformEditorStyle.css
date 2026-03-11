@@ -41,6 +41,12 @@
   gap: 1rem;
 }
 
+.WaveformEditor h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
 .hide {
   display: none;
 }
