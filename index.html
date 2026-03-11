@@ -1,15 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>mjöl</title>
-    <link rel="stylesheet" href="./public/style.css" />
+    <link rel="stylesheet" href="./public/Page.css" />
+    <link rel="stylesheet" href="./public/WaveformEditorStyle.css" />
   </head>
   <body>
-    <canvas id="waveform" width="256" height="256"></canvas>
-    <button id="playbutton">play</button>
+    <div class="App">
+      <div class="WaveformEditor hide">
+        <canvas id="waveform" width="256" height="256"></canvas>
+        <div class="Buttons">
+          <button id="playbutton">Preview</button>
+          <button id="closebutton">Close</button>
+        </div>
+      </div>
+    </div>
     <script type="module" src="./src/dft.mjs"></script>
+    <script type="module" src="./src/WaveformEditor.mjs"></script>
     <script type="module" src="./src/main.mjs"></script>
   </body>
 </html>
