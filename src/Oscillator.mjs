@@ -13,9 +13,11 @@ export class Oscillator {
     this.frequency = 440;
 
     // default to sine wave
-    const { real, imag } = dft(this.signal.map((_, i) =>
-      Math.sin((i / this.signal.length) * 2 * Math.PI)
-    ));
+    const { real, imag } = dft(
+      this.signal.map((_, i) =>
+        Math.sin((i / this.signal.length) * 2 * Math.PI),
+      ),
+    );
     this.wave = this.actx.createPeriodicWave(real, imag);
   }
 

@@ -32,6 +32,7 @@ function select_synth(id) {
 for (let i = 0; i < 3; i++) {
   const synth = new Synth(actx, waveformEditor, i + 1, select_synth);
   synth.addOscillator();
+  synth.addOscillator();
   synths.push(synth);
 }
 
