@@ -29,12 +29,21 @@ function select_synth(id) {
   });
 }
 
-for (let i = 0; i < 3; i++) {
-  const synth = new Synth(actx, waveformEditor, i + 1, select_synth);
-  synth.addOscillator();
+const synth = new Synth(actx, waveformEditor, 1, select_synth);
+synth.addOscillator();
+synths.push(synth);
+
+const add_synth_button = document.querySelector(".AddSynthButton");
+add_synth_button.onclick = () => {
+  const synth = new Synth(
+    actx,
+    waveformEditor,
+    synths.length + 1,
+    select_synth
+  );
   synth.addOscillator();
   synths.push(synth);
-}
+};
 
 document.addEventListener("keydown", (event) => {
   if (event.repeat) return;
@@ -115,5 +124,5 @@ document.addEventListener("keyup", (event) => {
 //waveformEditor.open();
 
 let waveformEditorAnimationID = requestAnimationFrame(
-  waveformEditor.draw.bind(waveformEditor),
+  waveformEditor.draw.bind(waveformEditor)
 );

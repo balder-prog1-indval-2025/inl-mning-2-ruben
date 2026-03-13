@@ -10,27 +10,85 @@ export class Synth {
     this.current_synth_element_title = document.createElement("h2");
     this.current_synth_element_title.textContent = `Synth ${id}`;
     this.current_synth_element.appendChild(this.current_synth_element_title);
-    const UID = id;
+    this.id = id;
     this.current_synth_element.classList.add("Synth");
-    this.current_synth_element.id = `synth-${UID}`;
+    this.current_synth_element.id = `synth-${this.id}`;
+
+    this.oscillator_wrapper = document.createElement("div");
+    this.oscillator_wrapper.classList.add("OscillatorWrapper");
+
+    this.add_oscillator_button = document.createElement("button");
+    this.add_oscillator_button.innerText = "Add oscillator";
+    this.add_oscillator_button.classList.add("OscillatorButton");
+
+    this.add_oscillator_button.onclick = () => {
+      this.addOscillator();
+    };
+
+    this.current_synth_element.appendChild(this.oscillator_wrapper);
+    this.current_synth_element.appendChild(this.add_oscillator_button);
+
     this.synths_element.appendChild(this.current_synth_element);
+
     if (selection_callback) {
       this.current_synth_element.addEventListener("click", () => {
-        selection_callback(UID);
+        selection_callback(this.id);
       });
     }
   }
 
   addOscillator() {
+    console.log(this.actx);
     const osc = new Oscillator(this.actx);
+
     this.oscillators.push(osc);
     const osc_element = document.createElement("div");
     osc_element.classList.add("Oscillator");
     osc_element.innerHTML = `
         <h3>Oscillator ${this.oscillators.length}</h3>
-        <button class="edit-waveform">Edit Waveform</button>
     `;
-    this.current_synth_element.appendChild(osc_element);
+    const osc_gain_slider = document.createElement("input");
+    osc_gain_slider.type = "range";
+    osc_gain_slider.id = `volume_s${this.id}_o${this.oscillators.length}`;
+    osc_gain_slider.min = "0";
+    osc_gain_slider.max = "2";
+    osc_gain_slider.step = "0.01";
+    osc_gain_slider.value = 1;
+
+    osc_gain_slider.addEventListener("input", (event) => {
+      osc.setGain(osc_gain_slider.value);
+    });
+
+    osc_element.appendChild(osc_gain_slider);
+
+    const osc_octave_wrapper = document.createElement("div");
+    osc_octave_wrapper.classList.add("OctaveWrapper");
+
+    const octave_down = document.createElement("button");
+    octave_down.innerText = "-";
+
+    octave_down.onclick = () => {
+      osc.octaveDown();
+    };
+
+    const octave_up = document.createElement("button");
+    octave_up.innerText = "+";
+
+    octave_up.onclick = () => {
+      osc.octaveUp();
+    };
+
+    osc_octave_wrapper.appendChild(octave_down);
+    osc_octave_wrapper.appendChild(octave_up);
+
+    osc_element.appendChild(osc_octave_wrapper);
+
+    const osc_edit_waveform_button = document.createElement("button");
+    osc_edit_waveform_button.classList.add("edit-waveform");
+    osc_edit_waveform_button.innerText = "Edit Waveform";
+    osc_element.appendChild(osc_edit_waveform_button);
+
+    this.oscillator_wrapper.appendChild(osc_element);
 
     const edit_waveform_button = osc_element.querySelector(".edit-waveform");
     edit_waveform_button.onclick = async () => {

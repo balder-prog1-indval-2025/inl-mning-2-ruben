@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mjöl</title>
+    <title>Wave</title>
     <link rel="stylesheet" href="./public/Page.css" />
     <link rel="stylesheet" href="./public/WaveformEditorStyle.css" />
     <link rel="stylesheet" href="./public/Synth.css" />
@@ -18,7 +18,10 @@
           <button id="closebutton">Close</button>
         </div>
       </div>
-      <div class="Synths"></div>
+      <div class="SynthWrapper">
+        <div class="Synths"></div>
+        <button class="AddSynthButton">Add synth</button>
+      </div>
     </div>
     <script type="module" src="./src/dft.mjs"></script>
     <script type="module" src="./src/WaveformEditor.mjs"></script>

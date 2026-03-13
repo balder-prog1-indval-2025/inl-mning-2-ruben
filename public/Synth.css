@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   background-color: #118a7e;
-  padding: 2rem;
+  padding: 1rem;
   margin: 10px;
-  border-radius: 15px;
-  border: 5px solid #93e4c1;
+  border-radius: 8px;
+  border: 3px solid #93e4c1;
   color: white;
   justify-content: center;
   align-items: center;
@@ -19,14 +19,16 @@
 .Synth h2 {
   margin-top: 0;
   margin-bottom: 0.5rem;
+  font-size: large;
+  font-weight: bold;
 }
 
 .Oscillator {
   display: flex;
   flex-direction: column;
   background-color: #1f6f78;
-  padding: 1rem;
-  margin: 2px;
+  padding: 0.5rem;
+  margin: 0;
   margin-top: 0.6rem;
   border-radius: 10px;
   border: 3px solid #93e4c1;
@@ -35,12 +37,18 @@
   align-items: center;
 }
 
+.Oscillator h3 {
+  font-size: medium;
+  font-weight: 100;
+  margin: 0.4rem;
+}
+
 .Oscillator button {
   border: none;
   background-color: #118a7e;
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
@@ -55,4 +63,8 @@
 
 .selected:hover {
   background-color: #8a1111d3;
+}
+
+.Synth .OscillatorButton {
+  background-color: #1f6f78;
 }
