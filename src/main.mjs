@@ -39,7 +39,7 @@ add_synth_button.onclick = () => {
     actx,
     waveformEditor,
     synths.length + 1,
-    select_synth
+    select_synth,
   );
   synth.addOscillator();
   synths.push(synth);
@@ -121,8 +121,37 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
+const track = {
+  notes: [
+    { pitch: 60, start: 0.0, duration: 0.5, velocity: 0.8 },
+    { pitch: 64, start: 0.5, duration: 0.5, velocity: 0.7 },
+    { pitch: 67, start: 1.0, duration: 1.0, velocity: 0.9 },
+  ],
+};
+
+const tempo = 120; // BPM
+const beatLength = 60 / tempo; // seconds per beat
+let nextBeatTime = 0;
+let currentBeat = 0;
+const scheduleAhead = 0.1; // schedule 100ms into the future
+
+function schedule() {
+  while (nextBeatTime < actx.currentTime + scheduleAhead) {
+    // find all notes that start on this beat
+    for (const note of track.notes) {
+      if (Math.abs(note.start - currentBeat) < 0.001) {
+        synths[0].playNote(note, nextBeatTime, beatLength); // play on first synth for now
+      }
+    }
+    currentBeat += 0.25; // 16th note resolution
+    nextBeatTime += beatLength * 0.25;
+  }
+  requestAnimationFrame(schedule);
+}
+
+schedule();
 //waveformEditor.open();
 
 let waveformEditorAnimationID = requestAnimationFrame(
-  waveformEditor.draw.bind(waveformEditor)
+  waveformEditor.draw.bind(waveformEditor),
 );

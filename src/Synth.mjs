@@ -9,10 +9,12 @@ export class Synth {
     this.current_synth_element = document.createElement("div");
     this.current_synth_element_title = document.createElement("h2");
     this.current_synth_element_title.textContent = `Synth ${id}`;
-    this.current_synth_element.appendChild(this.current_synth_element_title);
     this.id = id;
     this.current_synth_element.classList.add("Synth");
     this.current_synth_element.id = `synth-${this.id}`;
+
+    this.synth_panel = document.createElement("div");
+    this.synth_panel.classList.add("SynthPanel");
 
     this.oscillator_wrapper = document.createElement("div");
     this.oscillator_wrapper.classList.add("OscillatorWrapper");
@@ -25,8 +27,15 @@ export class Synth {
       this.addOscillator();
     };
 
-    this.current_synth_element.appendChild(this.oscillator_wrapper);
-    this.current_synth_element.appendChild(this.add_oscillator_button);
+    this.synth_panel.appendChild(this.current_synth_element_title);
+    this.synth_panel.appendChild(this.oscillator_wrapper);
+    this.synth_panel.appendChild(this.add_oscillator_button);
+
+    this.timeline = document.createElement("canvas");
+    this.timeline.classList.add("Timeline");
+
+    this.current_synth_element.appendChild(this.timeline);
+    this.current_synth_element.appendChild(this.synth_panel);
 
     this.synths_element.appendChild(this.current_synth_element);
 
@@ -99,5 +108,11 @@ export class Synth {
       const editedSignal = await this.editor.open(osc.getSignal());
       osc.define(editedSignal);
     };
+  }
+
+  playNote(note, time, beatLength) {
+    this.oscillators.forEach((osc) => {
+      osc.playNote(note, time, beatLength);
+    });
   }
 }

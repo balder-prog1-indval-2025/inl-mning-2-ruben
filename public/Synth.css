@@ -1,5 +1,21 @@
 .Synth {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  padding: 1rem;
+}
+
+.Synth canvas {
+  border: 3px solid #93e4c1;
+  border-radius: 8px;
+  background-color: #1f6f78;
+  width: 100%;
+  margin: 10px;
+}
+
+.SynthPanel {
+  display: flex;
   flex-direction: column;
   background-color: #118a7e;
   padding: 1rem;
@@ -12,11 +28,11 @@
   transition: background-color 0.2s ease-in-out;
 }
 
-.Synth:hover {
+.SynthPanel:hover {
   background-color: #118a7eaa;
 }
 
-.Synth h2 {
+.SynthPanel h2 {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-size: large;
@@ -65,6 +81,6 @@
   background-color: #8a1111d3;
 }
 
-.Synth .OscillatorButton {
+.SynthPanel .OscillatorButton {
   background-color: #1f6f78;
 }

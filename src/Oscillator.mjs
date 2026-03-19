@@ -19,8 +19,8 @@ export class Oscillator {
     // default to sine wave
     const { real, imag } = dft(
       this.signal.map((_, i) =>
-        Math.sin((i / this.signal.length) * 2 * Math.PI)
-      )
+        Math.sin((i / this.signal.length) * 2 * Math.PI),
+      ),
     );
     this.wave = this.actx.createPeriodicWave(real, imag);
   }
@@ -66,6 +66,12 @@ export class Oscillator {
     }
   }
 
+  #noteToFrequency(note) {
+    const A4 = 440;
+    const freq = A4 * Math.pow(2, (note - 69) / 12);
+    return freq;
+  }
+
   getSignal() {
     return this.signal;
   }
@@ -89,7 +95,7 @@ export class Oscillator {
     console.log(this.octave);
   }
 
-  start() {
+  start(time = null) {
     if (this.osc && this.osc_started) {
       this.osc.stop();
       this.osc.disconnect();
@@ -115,8 +121,35 @@ export class Oscillator {
     reverb.connect(wet);
     dry.connect(this.actx.destination);
     wet.connect(this.actx.destination);
-    this.osc.start();
+    if (time) {
+      this.osc.start(time);
+    } else {
+      this.osc.start();
+    }
     this.osc_started = true;
+  }
+
+  playNote(note, time, beatLength) {
+    this.osc = this.actx.createOscillator();
+    this.osc.setPeriodicWave(this.wave);
+    this.setFrequency(this.#noteToFrequency(note.pitch));
+
+    this.gainNode = this.actx.createGain();
+    this.gainNode.gain.value = this.gain;
+
+    this.gainNode.gain.setValueAtTime(
+      note.velocity,
+      time + note.duration * beatLength - 0.05,
+    );
+    this.gainNode.gain.linearRampToValueAtTime(
+      0,
+      time + note.duration * beatLength,
+    );
+
+    this.osc.connect(this.gainNode);
+    this.gainNode.connect(this.actx.destination);
+    this.osc.start(time);
+    this.osc.stop(time + note.duration * beatLength);
   }
 
   stop() {
