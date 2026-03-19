@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #1f6f78;
+}
+
+.App {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  height: 100vh;
+}
+
+.SynthWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.SynthWrapper button {
+  margin: 10px;
+  padding: 0.5rem 1rem;
+  background-color: #118a7e;
+  border: 3px solid #93e4c1;
+  border-radius: 8px;
+  color: white;
+}
+
+.SynthWrapper button:hover {
+  background-color: #118a7eaa;
+  cursor: pointer;
+}
+
+.SynthWrapper .AddSynthButton {
+  margin-top: 0;
+}

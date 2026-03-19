@@ -1,0 +1,52 @@
+.WaveformEditor {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+
+  width: 40vw;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: #118a7e;
+  padding: 2rem 1rem;
+  border-radius: 30px;
+  border: 5px solid #93e4c1;
+}
+
+.WaveformEditor button {
+  margin-top: 1rem;
+  background-color: #93e4c1;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: large;
+}
+
+.WaveformEditor button:hover {
+  background-color: #93e4c1aa;
+  cursor: pointer;
+}
+
+.WaveformEditor canvas {
+  background-color: #1f6f78;
+  border-radius: 15px;
+}
+
+.WaveformEditor .Buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.WaveformEditor h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.hide {
+  display: none;
+}
