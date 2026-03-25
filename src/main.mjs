@@ -39,13 +39,14 @@ add_synth_button.onclick = () => {
     actx,
     waveformEditor,
     synths.length + 1,
-    select_synth,
+    select_synth
   );
   synth.addOscillator();
   synths.push(synth);
 };
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keydown", async (event) => {
+  await Tone.start();
   if (event.repeat) return;
   if (active_synth_id !== null) {
     const synth = synths[active_synth_id - 1];
@@ -104,22 +105,18 @@ document.addEventListener("keydown", (event) => {
         dont_play = true;
     }
     if (!dont_play && frequency !== null) {
-      synth.oscillators.forEach((osc) => {
-        osc.setFrequency(frequency);
-        osc.start();
-      });
+      synth.triggerAttackRelease(frequency, "8n");
     }
   }
 });
 
-document.addEventListener("keyup", (event) => {
-  if (active_synth_id !== null) {
-    const synth = synths[active_synth_id - 1];
-    synth.oscillators.forEach((osc) => {
-      osc.stop();
-    });
-  }
-});
+document
+  .querySelector(".AddSynthButton")
+  .addEventListener("click", async () => {
+    await Tone.start();
+    console.log("audio is ready");
+    synths[0].triggerAttackRelease("C4", "2n");
+  });
 
 const track = {
   notes: [
@@ -149,9 +146,8 @@ function schedule() {
   requestAnimationFrame(schedule);
 }
 
+let waveformEditorAnimationID = requestAnimationFrame(
+  waveformEditor.draw.bind(waveformEditor)
+);
 schedule();
 //waveformEditor.open();
-
-let waveformEditorAnimationID = requestAnimationFrame(
-  waveformEditor.draw.bind(waveformEditor),
-);

@@ -116,8 +116,8 @@ export class Oscillator {
     wet.gain.value = 0.5;
 
     this.osc.connect(this.gainNode);
-    this.osc.connect(dry);
-    this.osc.connect(reverb);
+    this.gainNode.connect(dry);
+    this.gainNode.connect(reverb);
     reverb.connect(wet);
     dry.connect(this.actx.destination);
     wet.connect(this.actx.destination);
@@ -138,7 +138,7 @@ export class Oscillator {
     this.gainNode.gain.value = this.gain;
 
     this.gainNode.gain.setValueAtTime(
-      note.velocity,
+      this.gain * note.velocity,
       time + note.duration * beatLength - 0.05,
     );
     this.gainNode.gain.linearRampToValueAtTime(

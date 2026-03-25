@@ -1,15 +1,21 @@
 import { Oscillator } from "./Oscillator.mjs";
+import dft from "./dft.mjs";
 
 export class Synth {
   constructor(actx, editor, id = 0, selection_callback) {
     this.actx = actx;
     this.editor = editor;
     this.oscillators = [];
+    this.id = id;
+
+    this.filter = new Tone.Filter(1500, "lowpass");
+    this.reverb = new Tone.Reverb({ decay: 2, wet: 0.5 });
+    this.filter.chain(this.reverb, Tone.getDestination());
+
     this.synths_element = document.querySelector(".Synths");
     this.current_synth_element = document.createElement("div");
     this.current_synth_element_title = document.createElement("h2");
     this.current_synth_element_title.textContent = `Synth ${id}`;
-    this.id = id;
     this.current_synth_element.classList.add("Synth");
     this.current_synth_element.id = `synth-${this.id}`;
 
@@ -27,9 +33,26 @@ export class Synth {
       this.addOscillator();
     };
 
+    this.reverb_label = document.createElement("label");
+    this.reverb_label.classList.add("ReverbLabel");
+    this.reverb_label.innerText = "Reverb";
+
+    const reverb_slider = document.createElement("input");
+    reverb_slider.type = "range";
+    reverb_slider.min = 0;
+    reverb_slider.max = 1;
+    reverb_slider.step = 0.01;
+    reverb_slider.value = 0.5;
+
+    reverb_slider.addEventListener("input", () => {
+      this.reverb.wet.value = reverb_slider.value;
+    });
+
     this.synth_panel.appendChild(this.current_synth_element_title);
     this.synth_panel.appendChild(this.oscillator_wrapper);
     this.synth_panel.appendChild(this.add_oscillator_button);
+    this.synth_panel.appendChild(this.reverb_label);
+    this.synth_panel.appendChild(reverb_slider);
 
     this.timeline = document.createElement("canvas");
     this.timeline.classList.add("Timeline");
@@ -46,27 +69,49 @@ export class Synth {
     }
   }
 
+  triggerAttackRelease(note, duration, time) {
+    this.oscillators.forEach((osc) =>
+      osc.osc.triggerAttackRelease(note, duration, time)
+    );
+  }
+
   addOscillator() {
     console.log(this.actx);
     const osc = new Oscillator(this.actx);
 
-    this.oscillators.push(osc);
+    let partials = [1];
+    for (let i = 1; i < 256; i++) {
+      partials.push(0);
+    }
+
+    const oscillator = {
+      osc: new Tone.Synth({
+        oscillator: {
+          type: "custom",
+          partials: partials,
+        },
+        envelope: { attack: 0.01, decay: 0.3, sustain: 0.4, release: 0.5 },
+        volume: 0,
+      }),
+      signal: partials,
+    };
+    oscillator.osc.connect(this.filter);
+
+    this.oscillators.push(oscillator);
+
     const osc_element = document.createElement("div");
     osc_element.classList.add("Oscillator");
     osc_element.innerHTML = `
         <h3>Oscillator ${this.oscillators.length}</h3>
     `;
     const osc_gain_slider = document.createElement("input");
+
     osc_gain_slider.type = "range";
     osc_gain_slider.id = `volume_s${this.id}_o${this.oscillators.length}`;
     osc_gain_slider.min = "0";
     osc_gain_slider.max = "2";
     osc_gain_slider.step = "0.01";
     osc_gain_slider.value = 1;
-
-    osc_gain_slider.addEventListener("input", (event) => {
-      osc.setGain(osc_gain_slider.value);
-    });
 
     osc_element.appendChild(osc_gain_slider);
 
@@ -76,16 +121,8 @@ export class Synth {
     const octave_down = document.createElement("button");
     octave_down.innerText = "-";
 
-    octave_down.onclick = () => {
-      osc.octaveDown();
-    };
-
     const octave_up = document.createElement("button");
     octave_up.innerText = "+";
-
-    octave_up.onclick = () => {
-      osc.octaveUp();
-    };
 
     osc_octave_wrapper.appendChild(octave_down);
     osc_octave_wrapper.appendChild(octave_up);
@@ -100,19 +137,33 @@ export class Synth {
     this.oscillator_wrapper.appendChild(osc_element);
 
     const edit_waveform_button = osc_element.querySelector(".edit-waveform");
+
+    osc_gain_slider.addEventListener("input", (event) => {
+      const linear = parseFloat(osc_gain_slider.value);
+      oscillator.osc.volume.value =
+        linear > 0 ? 20 * Math.log10(linear) : -Infinity;
+    });
+
+    octave_down.onclick = () => {
+      osc.octaveDown();
+    };
+    octave_up.onclick = () => {
+      osc.octaveUp();
+    };
+
     edit_waveform_button.onclick = async () => {
       if (osc.osc) {
         osc.stop();
         osc.osc.disconnect();
       }
-      const editedSignal = await this.editor.open(osc.getSignal());
-      osc.define(editedSignal);
+      const editedSignal = await this.editor.open(oscillator.signal);
+      oscillator.signal = editedSignal;
+      const { real, imag } = dft(editedSignal);
+      const partials = [];
+      for (let i = 1; i < real.length; i++) {
+        partials.push(Math.sqrt(real[i] * real[i] + imag[i] * imag[i]));
+      }
+      oscillator.osc.oscillator.partials = partials;
     };
-  }
-
-  playNote(note, time, beatLength) {
-    this.oscillators.forEach((osc) => {
-      osc.playNote(note, time, beatLength);
-    });
   }
 }
