@@ -132,22 +132,6 @@ let nextBeatTime = 0;
 let currentBeat = 0;
 const scheduleAhead = 0.1; // schedule 100ms into the future
 
-function schedule() {
-  while (nextBeatTime < actx.currentTime + scheduleAhead) {
-    // find all notes that start on this beat
-    for (const note of track.notes) {
-      if (Math.abs(note.start - currentBeat) < 0.001) {
-        synths[0].playNote(note, nextBeatTime, beatLength); // play on first synth for now
-      }
-    }
-    currentBeat += 0.25; // 16th note resolution
-    nextBeatTime += beatLength * 0.25;
-  }
-  requestAnimationFrame(schedule);
-}
-
 let waveformEditorAnimationID = requestAnimationFrame(
   waveformEditor.draw.bind(waveformEditor)
 );
-schedule();
-//waveformEditor.open();

@@ -1,5 +1,5 @@
-import { Oscillator } from "./Oscillator.mjs";
 import dft from "./dft.mjs";
+import { Timeline } from "./Timeline.mjs";
 
 export class Synth {
   constructor(actx, editor, id = 0, selection_callback) {
@@ -54,10 +54,10 @@ export class Synth {
     this.synth_panel.appendChild(this.reverb_label);
     this.synth_panel.appendChild(reverb_slider);
 
-    this.timeline = document.createElement("canvas");
-    this.timeline.classList.add("Timeline");
+    const timeline_canvas = document.createElement("canvas");
+    timeline_canvas.classList.add("Timeline");
 
-    this.current_synth_element.appendChild(this.timeline);
+    this.current_synth_element.appendChild(timeline_canvas);
     this.current_synth_element.appendChild(this.synth_panel);
 
     this.synths_element.appendChild(this.current_synth_element);
@@ -67,19 +67,28 @@ export class Synth {
         selection_callback(this.id);
       });
     }
+
+    const ctx = timeline_canvas.getContext("2d");
+
+    this.timeline = new Timeline(ctx);
+
+    this.timeline.render();
+
+    const observer = new ResizeObserver(() => this.timeline.resize());
+    observer.observe(timeline_canvas);
   }
 
   triggerAttackRelease(note, duration, time) {
-    this.oscillators.forEach((osc) =>
-      osc.osc.triggerAttackRelease(note, duration, time)
-    );
+    this.oscillators.forEach((osc) => {
+      let freq = note * Math.pow(2, osc.octave);
+      osc.osc.triggerAttackRelease(freq, duration, time);
+    });
   }
 
   addOscillator() {
     console.log(this.actx);
-    const osc = new Oscillator(this.actx);
 
-    let partials = [1];
+    let partials = [0];
     for (let i = 1; i < 256; i++) {
       partials.push(0);
     }
@@ -94,6 +103,7 @@ export class Synth {
         volume: 0,
       }),
       signal: partials,
+      octave: 0,
     };
     oscillator.osc.connect(this.filter);
 
@@ -145,17 +155,13 @@ export class Synth {
     });
 
     octave_down.onclick = () => {
-      osc.octaveDown();
+      oscillator.octave--;
     };
     octave_up.onclick = () => {
-      osc.octaveUp();
+      oscillator.octave++;
     };
 
     edit_waveform_button.onclick = async () => {
-      if (osc.osc) {
-        osc.stop();
-        osc.osc.disconnect();
-      }
       const editedSignal = await this.editor.open(oscillator.signal);
       oscillator.signal = editedSignal;
       const { real, imag } = dft(editedSignal);
