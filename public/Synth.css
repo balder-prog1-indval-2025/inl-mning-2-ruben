@@ -3,9 +3,12 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem;
   height: auto;
-  margin-bottom: 1rem;
+  margin: 0.5rem;
+  background-color: #00000036;
+  border-radius: 15px;
+  gap: 0.5rem;
 }
 
 .Synth canvas {
@@ -13,22 +16,24 @@
   border-radius: 8px;
   background-color: #1f6f78;
   width: 100%;
-  margin: 10px;
-  height: 300px;
+  height: 400px;
+  margin: 0;
 }
 
 .SynthPanel {
   display: flex;
   flex-direction: column;
   background-color: #118a7e;
-  padding: 1rem;
-  margin: 10px;
+  padding: 0rem;
   border-radius: 8px;
   border: 3px solid #93e4c1;
   color: white;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   transition: background-color 0.2s ease-in-out;
+  height: 400px;
+  width: 250px;
+  overflow-y: auto;
 }
 
 .SynthPanel:hover {
@@ -36,10 +41,14 @@
 }
 
 .SynthPanel h2 {
-  margin-top: 0;
+  margin-top: 2rem;
   margin-bottom: 0.5rem;
   font-size: large;
   font-weight: bold;
+}
+
+.SynthPanel .Reverb {
+  margin-bottom: 2rem;
 }
 
 .Oscillator {
@@ -50,6 +59,7 @@
   margin: 0;
   margin-top: 0.6rem;
   border-radius: 10px;
+  padding: 0.5rem;
   border: 3px solid #93e4c1;
   color: white;
   justify-content: center;

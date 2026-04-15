@@ -43,6 +43,7 @@ export class Synth {
     reverb_slider.max = 1;
     reverb_slider.step = 0.01;
     reverb_slider.value = 0.5;
+    reverb_slider.classList.add("Reverb");
 
     reverb_slider.addEventListener("input", () => {
       this.reverb.wet.value = reverb_slider.value;

@@ -3,16 +3,10 @@ export class Timeline {
     this.ctx = ctx;
     console.log(this.ctx.canvas);
 
-    this.vertCount = 12;
-    this.horizCount = 20;
+    this.vertCount = 24;
+    this.horizCount = 30;
 
-    this.notes = [
-      {
-        time: 2,
-        note: 3,
-        length: 3,
-      },
-    ];
+    this.notes = [];
 
     this.onNoteEdge = { value: false, index: 0 };
     this.resizing_note = false;

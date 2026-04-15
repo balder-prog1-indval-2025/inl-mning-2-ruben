@@ -6,9 +6,8 @@ body {
 
 .App {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-start;
+  flex-direction: column;
+
   height: 100vh;
 }
 
@@ -39,4 +38,18 @@ body {
 
 .edit {
   cursor: col-resize;
+}
+
+.Toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 1rem;
+  background-color: #118a7e;
+  border-bottom: 3px solid #93e4c1;
+}
+
+.Toolbar h2 {
+  color: white;
 }
