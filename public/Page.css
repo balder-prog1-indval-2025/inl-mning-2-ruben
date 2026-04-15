@@ -36,3 +36,7 @@ body {
 .SynthWrapper .AddSynthButton {
   margin-top: 0;
 }
+
+.edit {
+  cursor: col-resize;
+}

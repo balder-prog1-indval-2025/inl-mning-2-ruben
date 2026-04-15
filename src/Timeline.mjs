@@ -14,9 +14,28 @@ export class Timeline {
       },
     ];
 
+    this.onNoteEdge = { value: false, index: 0 };
+    this.resizing_note = false;
+
     this.ctx.canvas.addEventListener("mousemove", (event) => {
       const mouse_pos = this.#getMousePos(event);
-      for (let note of this.notes) {
+
+      if (this.resizing_note) {
+        let note = this.notes[this.onNoteEdge.index];
+        let noteX = (note.time * this.ctx.canvas.width) / this.horizCount;
+        let distance = mouse_pos.x - noteX;
+        let new_length = distance / (this.ctx.canvas.width / this.horizCount);
+
+        this.notes[this.onNoteEdge.index].length = new_length;
+        //console.log(new_length);
+
+        return;
+      }
+
+      this.onNoteEdge.value = false;
+
+      for (let i = 0; i < this.notes.length; i++) {
+        let note = this.notes[i];
         let x =
           ((note.time + note.length) * this.ctx.canvas.width) / this.horizCount;
         let y =
@@ -25,20 +44,53 @@ export class Timeline {
         let note_height = this.ctx.canvas.height / this.vertCount;
         if (mouse_pos.x > x - 10 && mouse_pos.x < x + 10) {
           if (mouse_pos.y > y && mouse_pos.y < y + note_height) {
-            console.log("edge");
+            //console.log("edge");
+            this.onNoteEdge.value = true;
+            this.onNoteEdge.index = i;
           }
         }
       }
+      if (this.onNoteEdge.value) {
+        if (!this.ctx.canvas.classList.contains("edit")) {
+          this.ctx.canvas.classList.add("edit");
+        }
+      } else {
+        if (this.ctx.canvas.classList.contains("edit")) {
+          this.ctx.canvas.classList.remove("edit");
+        }
+      }
+      //console.log(this.ctx.canvas.classList);
+      //console.log(this.onNoteEdge);
     });
 
     this.ctx.canvas.addEventListener("mousedown", (event) => {
+      if (this.onNoteEdge.value) {
+        console.log("resizing");
+        this.resizing_note = true;
+      } else {
+        this.resizing_note = false;
+      }
       const mouse_pos = this.#getMousePos(event);
 
       for (let i = 0; i < this.notes.length; i++) {}
       console.log("mouse");
     });
 
+    this.ctx.canvas.addEventListener("mouseup", (event) => {
+      if (this.resizing_note) {
+        this.notes[this.onNoteEdge.index].length = Math.round(
+          this.notes[this.onNoteEdge.index].length
+        );
+        this.resizing_note = false;
+      }
+    });
+
     this.ctx.canvas.addEventListener("click", (event) => {
+      console.log(this.resizing_note);
+      if (this.onNoteEdge.value) {
+        return;
+      }
+
       // get mouse x and y
       const mouse_pos = this.#getMousePos(event);
       const vertical_index = Math.floor(
