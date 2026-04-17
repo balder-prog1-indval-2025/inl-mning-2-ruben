@@ -118,19 +118,62 @@ document
     synths[0].triggerAttackRelease("C4", "2n");
   });
 
-const track = {
-  notes: [
-    { pitch: 60, start: 0.0, duration: 0.5, velocity: 0.8 },
-    { pitch: 64, start: 0.5, duration: 0.5, velocity: 0.7 },
-    { pitch: 67, start: 1.0, duration: 1.0, velocity: 0.9 },
-  ],
+const TIMELINE_BASE_MIDI = 48;
+const COLUMN_SUBDIVISION = "16n";
+
+function timelineNoteToFreq(n) {
+  return noteToFrequency(TIMELINE_BASE_MIDI + (n - 1));
+}
+
+const play_button = document.querySelector(".PlayButton");
+const stop_button = document.querySelector(".StopButton");
+const tempo_input = document.querySelector(".Tempo");
+
+let parts = [];
+
+function disposeParts() {
+  parts.forEach((p) => p.dispose());
+  parts = [];
+}
+
+play_button.onclick = async () => {
+  await Tone.start();
+
+  Tone.Transport.stop();
+  Tone.Transport.cancel();
+  Tone.Transport.position = 0;
+  disposeParts();
+
+  Tone.Transport.bpm.value = parseFloat(tempo_input.value) || 100;
+
+  const sixteenth = Tone.Time(COLUMN_SUBDIVISION).toSeconds();
+
+  for (const synth of synths) {
+    const events = synth.timeline.notes
+      .filter((n) => n.length > 0)
+      .map((n) => ({
+        time: n.time * sixteenth,
+        duration: n.length * sixteenth,
+        freq: timelineNoteToFreq(n.note),
+        velocity: 0.8,
+      }));
+
+    const part = new Tone.Part((time, ev) => {
+      synth.triggerAttackRelease(ev.freq, ev.duration, time);
+    }, events);
+
+    part.start(0);
+    parts.push(part);
+  }
+
+  Tone.Transport.start();
 };
 
-const tempo = 120; // BPM
-const beatLength = 60 / tempo; // seconds per beat
-let nextBeatTime = 0;
-let currentBeat = 0;
-const scheduleAhead = 0.1; // schedule 100ms into the future
+stop_button.onclick = () => {
+  Tone.Transport.stop();
+  Tone.Transport.cancel();
+  disposeParts();
+};
 
 let waveformEditorAnimationID = requestAnimationFrame(
   waveformEditor.draw.bind(waveformEditor)
