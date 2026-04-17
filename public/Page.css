@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+
+* {
+  font-family: "Quicksand", sans-serif;
+}
+
 body {
   margin: 0;
   font-family: "Arial", sans-serif;
@@ -44,12 +50,73 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0rem;
   gap: 1rem;
   background-color: #118a7e;
   border-bottom: 3px solid #93e4c1;
+  margin-bottom: 0.6rem;
 }
 
 .Toolbar h2 {
   color: white;
+}
+
+.PlaybackWrapper {
+  display: flex;
+  gap: 0.3rem;
+  background-color: #1f6f7880;
+  padding: 0.5rem;
+  border-radius: 1.1rem;
+  transition: background-color 0.1s ease;
+}
+
+.PlaybackWrapper:hover {
+  background-color: #1e666e8c;
+}
+
+.PlaybackWrapper button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  text-align: center;
+  color: white;
+  border: none;
+  border-radius: 0.6rem;
+}
+
+.PlayButton {
+  background-color: #2ec471;
+}
+
+.StopButton {
+  background-color: #d33434;
+}
+
+.Toolbar button:hover {
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.Tempo {
+  background-color: #1f6f7880;
+  border: none;
+  color: white;
+  height: 2rem;
+  width: 3rem;
+  padding: 0.5rem;
+  border-radius: 1.1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  transition: background-color 0.1s ease;
+}
+
+.Tempo:hover {
+  background-color: #1e666e8c;
+}
+
+.Tempo:focus {
+  outline: none;
+  background-color: #1e666e8c;
 }

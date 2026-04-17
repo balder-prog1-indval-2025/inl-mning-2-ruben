@@ -11,9 +11,16 @@
   <body>
     <div class="App">
       <div class="Toolbar">
-        <h2>gurt</h2>
-        <button>play</button>
-        <button>stop</button>
+        <h2>mjusik</h2>
+        <div class="PlaybackWrapper">
+          <button class="PlayButton">
+            <img src="./play.svg" alt="play" />
+          </button>
+          <button class="StopButton">
+            <img src="./stop.svg" alt="stop" />
+          </button>
+        </div>
+        <input class="Tempo" placeholder="BPM" value="100" />
       </div>
       <div class="WaveformEditor hide">
         <h2>Waveform Editor</h2>
