@@ -157,10 +157,43 @@ export class Timeline {
     this.ctx.fillStyle = "rgb(0,0,30)";
     this.ctx.fillRect(0, 0, W, H);
 
-    for (let i = 0; i < this.vertCount; i++) {
+    for (let i = 0; i <= this.vertCount; i++) {
       this.ctx.strokeStyle = "white";
       this.ctx.lineWidth = 0.3;
       this.#drawLine(0, (i * H) / this.vertCount, W, (i * H) / this.vertCount);
+
+      let note_key = (this.vertCount - i) % 12;
+      let white = false;
+      switch (note_key) {
+        case 0:
+          white = true;
+          break;
+        case 2:
+          white = true;
+          break;
+        case 4:
+          white = true;
+          break;
+        case 5:
+          white = true;
+          break;
+        case 7:
+          white = true;
+          break;
+        case 9:
+          white = true;
+          break;
+        case 11:
+          white = true;
+          break;
+        default:
+          white = false;
+      }
+
+      if (white) {
+        this.ctx.fillStyle = "rgba(255,255,255,0.2)";
+        this.ctx.fillRect(0, (i * H) / this.vertCount, W, -H / this.vertCount);
+      }
     }
     for (let i = 0; i < this.horizCount; i++) {
       this.#drawLine(

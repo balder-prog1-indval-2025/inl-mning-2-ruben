@@ -137,6 +137,8 @@ function disposeParts() {
 }
 
 play_button.onclick = async () => {
+  // spela upp hela projektet
+
   await Tone.start();
 
   Tone.Transport.stop();

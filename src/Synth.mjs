@@ -9,8 +9,9 @@ export class Synth {
     this.id = id;
 
     this.filter = new Tone.Filter(1500, "lowpass");
+    this.distortion = new Tone.Distortion(0.9);
     this.reverb = new Tone.Reverb({ decay: 2, wet: 0.5 });
-    this.filter.chain(this.reverb, Tone.getDestination());
+    this.filter.chain(this.distortion, this.reverb, Tone.getDestination());
 
     this.synths_element = document.querySelector(".Synths");
     this.current_synth_element = document.createElement("div");
