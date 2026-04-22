@@ -4,7 +4,7 @@ export class Timeline {
     console.log(this.ctx.canvas);
 
     this.vertCount = 24;
-    this.horizCount = 30;
+    this.horizCount = 32;
 
     this.notes = [];
 
