@@ -48,7 +48,7 @@
 }
 
 .SynthPanel .Reverb {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 .Oscillator {
@@ -96,4 +96,12 @@
 
 .SynthPanel .OscillatorButton {
   background-color: #1f6f78;
+}
+
+.DistortionLabel {
+  margin-top: 0;
+}
+
+.SynthPanel .Distortion {
+  margin-bottom: 1rem;
 }

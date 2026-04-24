@@ -9,7 +9,7 @@ export class Synth {
     this.id = id;
 
     this.filter = new Tone.Filter(1500, "lowpass");
-    this.distortion = new Tone.Distortion(0.9);
+    this.distortion = new Tone.Distortion(0.5);
     this.reverb = new Tone.Reverb({ decay: 2, wet: 0.5 });
     this.filter.chain(this.distortion, this.reverb, Tone.getDestination());
 
@@ -50,14 +50,33 @@ export class Synth {
       this.reverb.wet.value = reverb_slider.value;
     });
 
+    this.dist_label = document.createElement("label");
+    this.dist_label.classList.add("DistortionLabel");
+    this.dist_label.innerText = "Distortion";
+
+    const dist_slider = document.createElement("input");
+    dist_slider.type = "range";
+    dist_slider.min = 0;
+    dist_slider.max = 1;
+    dist_slider.step = 0.01;
+    dist_slider.value = 0.5;
+    dist_slider.classList.add("Distortion");
+
+    dist_slider.addEventListener("input", () => {
+      this.distortion.wet.value = dist_slider.value;
+    });
+
     this.synth_panel.appendChild(this.current_synth_element_title);
     this.synth_panel.appendChild(this.oscillator_wrapper);
     this.synth_panel.appendChild(this.add_oscillator_button);
     this.synth_panel.appendChild(this.reverb_label);
     this.synth_panel.appendChild(reverb_slider);
+    this.synth_panel.appendChild(this.dist_label);
+    this.synth_panel.appendChild(dist_slider);
 
     const timeline_canvas = document.createElement("canvas");
     timeline_canvas.classList.add("Timeline");
+    timeline_canvas.tabIndex = 0;
 
     this.current_synth_element.appendChild(timeline_canvas);
     this.current_synth_element.appendChild(this.synth_panel);

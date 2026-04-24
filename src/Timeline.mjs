@@ -6,13 +6,20 @@ export class Timeline {
     this.vertCount = 24;
     this.horizCount = 32;
 
+    this.timeline_x_offset = 0;
+    this.target_timeline_x_offset = 0;
+
+    this.scroll_power = 40;
+    this.scroll_lerp_value = 0.2;
+
     this.notes = [];
 
     this.onNoteEdge = { value: false, index: 0 };
     this.resizing_note = false;
 
     this.ctx.canvas.addEventListener("mousemove", (event) => {
-      const mouse_pos = this.#getMousePos(event);
+      let mouse_pos = this.#getMousePos(event);
+      mouse_pos.x += this.timeline_x_offset;
 
       if (this.resizing_note) {
         let note = this.notes[this.onNoteEdge.index];
@@ -86,7 +93,9 @@ export class Timeline {
       }
 
       // get mouse x and y
-      const mouse_pos = this.#getMousePos(event);
+      let mouse_pos = this.#getMousePos(event);
+      mouse_pos.x += this.timeline_x_offset;
+
       const vertical_index = Math.floor(
         (this.vertCount * mouse_pos.y) / this.ctx.canvas.height
       );
@@ -122,6 +131,19 @@ export class Timeline {
       //console.log(horizontal_index);
       //console.log(vertical_index);
       //console.log(mouse_pos);
+    });
+
+    this.ctx.canvas.addEventListener("keydown", (event) => {
+      console.log(event.key);
+      if (event.key == "ArrowRight") {
+        this.target_timeline_x_offset += this.scroll_power;
+      }
+      if (event.key == "ArrowLeft") {
+        this.target_timeline_x_offset -= this.scroll_power;
+      }
+      if (this.target_timeline_x_offset < 0) {
+        this.target_timeline_x_offset = 0;
+      }
     });
   }
 
@@ -195,17 +217,44 @@ export class Timeline {
         this.ctx.fillRect(0, (i * H) / this.vertCount, W, -H / this.vertCount);
       }
     }
-    for (let i = 0; i < this.horizCount; i++) {
+
+    const lerp = (x, y, a) => x * (1 - a) + y * a;
+
+    this.timeline_x_offset = lerp(
+      this.timeline_x_offset,
+      this.target_timeline_x_offset,
+      this.scroll_lerp_value
+    );
+
+    this.render_x_off = this.timeline_x_offset % (W / this.horizCount);
+    //this.timeline_x_offset += 0.1;
+    console.log(this.render_x_off);
+
+    for (let i = 0; i <= this.horizCount; i++) {
+      this.ctx.lineWidth = 0.3;
+      //W / this.horizCount;
+
+      let scrolled_cells = Math.floor(
+        this.timeline_x_offset / (W / this.horizCount)
+      );
+      let bar_index = i + scrolled_cells;
+      if (bar_index % 4 == 0) {
+        this.ctx.lineWidth = 0.8;
+      }
+      if (bar_index % 16 == 0) {
+        this.ctx.lineWidth = 1.5;
+      }
+
       this.#drawLine(
-        (i * W) / this.horizCount,
+        (i * W) / this.horizCount - this.render_x_off,
         0,
-        (i * W) / this.horizCount,
+        (i * W) / this.horizCount - this.render_x_off,
         H
       );
     }
 
     for (let note of this.notes) {
-      const x = (note.time * W) / this.horizCount;
+      const x = (note.time * W) / this.horizCount - this.timeline_x_offset;
       const note_position = this.vertCount - note.note;
       const y = (note_position * H) / this.vertCount;
       const note_w = (note.length * W) / this.horizCount;
