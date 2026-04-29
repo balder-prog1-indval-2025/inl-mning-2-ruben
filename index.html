@@ -7,21 +7,69 @@
     <link rel="stylesheet" href="./public/Page.css" />
     <link rel="stylesheet" href="./public/WaveformEditorStyle.css" />
     <link rel="stylesheet" href="./public/Synth.css" />
+    <link rel="stylesheet" href="./public/InformationPanel.css" />
   </head>
   <body>
     <div class="App">
       <div class="Toolbar">
-        <h2>mjusik</h2>
-        <div class="PlaybackWrapper">
-          <button class="PlayButton">
-            <img src="./icons/play.svg" alt="play" />
-          </button>
-          <button class="StopButton">
-            <img src="./icons/stop.svg" alt="stop" />
-          </button>
+        <div class="MainTools">
+          <h2>mjusik</h2>
+          <div class="PlaybackWrapper">
+            <button class="PlayButton">
+              <img src="./icons/play.svg" alt="play" />
+            </button>
+            <button class="StopButton">
+              <img src="./icons/stop.svg" alt="stop" />
+            </button>
+          </div>
+          <input type="number" class="Tempo" placeholder="BPM" value="100" />
         </div>
-        <input class="Tempo" placeholder="BPM" value="100" />
+        <button id="infobutton">
+          <img src="./icons/info.svg" alt="info" height="20" />
+        </button>
       </div>
+
+      <div class="InformationPanel hide">
+        <h2>Information</h2>
+        <div class="InfoSpalter">
+          <p>
+            <strong>Getting started</strong><br />
+            You start with one synth already created — dive straight in. Click
+            on a synth to select it; the selected synth is the one you control
+            with your keyboard and edit notes on. Press
+            <em>Add synth</em> when you want another.<br /><br />
+            <strong>Important:</strong> every oscillator (including the one in
+            the starting synth) is silent until you draw its waveform. Open the
+            waveform editor on the oscillator, draw a shape on the canvas,
+            preview it, then close — only then will that oscillator produce
+            sound. You must do this for every new oscillator you create.<br /><br />
+            Each synth has its own row of notes on the timeline. Click a cell to
+            place a note; click further to the right of an existing note to
+            extend its length.
+          </p>
+          <p>
+            <strong>Playback</strong><br />
+            Set the tempo (BPM) in the toolbar, then press the green play button
+            to play back every synth's timeline together. The red stop button
+            halts playback.<br /><br />
+            <strong>Keyboard controls</strong><br />
+            With a synth selected, the keyboard acts like a piano (lower row =
+            white keys, upper row = black keys):<br />
+            <code>A W S E D F T G Y H U J K O L P</code><br />
+            covers C4 up to D#5 chromatically.<br /><br />
+            <strong>Timeline navigation</strong><br />
+            Click the timeline canvas to focus it, then use
+            <code>←</code> / <code>→</code> to scroll the piano roll left and
+            right. Scrolling is clamped at the start so you can't go past bar
+            0.<br /><br />
+            <strong>Tips</strong><br />
+            Make sure a synth is selected (highlighted) before playing,
+            otherwise key presses are silent. Held keys won't stack — repeats
+            are ignored.
+          </p>
+        </div>
+      </div>
+
       <div class="WaveformEditor hide">
         <h2>Waveform Editor</h2>
         <canvas id="waveform" width="256" height="256"></canvas>

@@ -110,6 +110,16 @@ document.addEventListener("keydown", async (event) => {
   }
 });
 
+const information_panel = document.querySelector(".InformationPanel");
+
+document.querySelector("#infobutton").onclick = () => {
+  information_panel.classList.toggle("hide");
+};
+
+information_panel.onclick = () => {
+  information_panel.classList.toggle("hide");
+};
+
 document
   .querySelector(".AddSynthButton")
   .addEventListener("click", async () => {
