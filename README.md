@@ -1,43 +1,99 @@
-# balderjs-template
+# mjusik
 
-## Run
-`npm install`  
-`npx balderjs`
+A browser-based music creation tool. Draw your own oscillator waveforms,
+build synths from those oscillators, and arrange notes on per-synth piano
+rolls to compose short pieces.
 
-## Inlämning
-I den här uppgiften får du göra valfritt större program. Det finns exempel nedan på några olika spel om du inte har någon egen idé. Diskutera med mig om du är osäker.
+## Features
 
-Det är viktigt att ditt program innehåller if-satser, loopar, arrayer (eller andra datastrukturer) och funktioner. Med fördel använder ni också grafiska funktioner och/eller update-funktionen i balderjs. Då kan ni få lite roligare program än om ni bara använder read och write.
+- **Custom waveform editor.** Draw a waveform freehand on a canvas; the
+  app runs a DFT on your sample buffer and feeds the resulting harmonic
+  partials into a `Tone.Synth` so the oscillator sounds exactly like
+  what you drew.
+- **Multi-synth, multi-oscillator architecture.** Add as many synths as
+  you want; each synth holds one or more oscillators that are summed
+  together. Per-oscillator volume and octave shift.
+- **Per-synth effects.** Lowpass filter into distortion into reverb,
+  with sliders for distortion amount and reverb wet level.
+- **Piano roll per synth.** Click cells to place notes, click further
+  right of an existing note to extend its length. Each synth has its
+  own row of notes and plays back independently.
+- **Live keyboard playing.** Select a synth and play it from the
+  computer keyboard in a piano-style layout (`A W S E D F T G Y H U J
+  K O L P` covers C4–D#5 chromatically).
+- **Transport.** Tempo input (BPM), play, and stop buttons trigger every
+  synth's timeline together via `Tone.Transport` and `Tone.Part`.
+- **In-app help.** Click the info button in the top-right of the
+  toolbar for usage instructions and the full keyboard reference.
 
-Den här är en betygsgrundande uppgift och förutom att lämna in behöver du diskutera med och förklara för mig både under arbetets gång och efter du är klar.
+## Running it
 
-Om man vill kan man jobba i grupp, 2 eller möjligtvis 3 personer. 
+The project is plain HTML + ES modules with no build step. Open
+`index.html` through any local static server, e.g.:
 
-## Exempel
+```
+npx serve .
+```
 
-### "Enkelt" plattformsspel
-Använd exempelkoden som finns i projektet och gör deluppgifterna i plattformsspel.md.
+then visit the printed URL. Opening `index.html` directly via
+`file://` will fail because the browser blocks ES module imports from
+the local filesystem.
 
-### Grid-spel
-Vissa av er kanske testade grid-spelen när jag skapade dem som fördjupningsuppgifter. Jag lägger en kopia av det här:
+`Tone.js` is loaded from `unpkg.com` at runtime — an internet
+connection is required on first load.
 
-Använd grid-objektet (exempel finns i BalderJS-API:et) för att skapa något (eller några) av följande spel:
+## How to use
 
-- [Luffarschack](https://sv.wikipedia.org/wiki/Luffarschack)
-- [Schack](https://sv.wikipedia.org/wiki/Schack)
-- [Röj](https://sv.wikipedia.org/wiki/MS_R%C3%B6j)
-- [Sudoku](https://sv.wikipedia.org/wiki/Sudoku)
-- [Game of Life](https://sv.wikipedia.org/wiki/Game_of_Life)
-- [Tetris](https://sv.wikipedia.org/wiki/Tetris)
+1. The app starts with one synth already created. Click on it to select
+   it (it will highlight).
+2. **Draw a waveform.** Every oscillator is silent until you draw its
+   waveform. Press *Edit Waveform* on the oscillator, draw a shape on
+   the canvas, press *Preview* to hear it, then *Close* to apply.
+3. Play the selected synth from your keyboard, or click cells on its
+   timeline to write notes.
+4. Add more oscillators (stacked into the same synth) or more synths
+   (separate timelines) as you go. Tweak distortion and reverb per
+   synth.
+5. Set the BPM in the toolbar and press the green play button to play
+   back every synth's timeline together. The red stop button halts
+   playback.
 
-### Sudoku-lösare
-...eller liknande. Kräver att man först gör någon av grid-spelen ovan. Sedan ska det implementeras någon form av logik som kan lösa sodukot eller spela röj etc. Olika spel är såklart olika svåra. T.ex. rekommenderar jag att inte implementera en schack-AI.
+## Project layout
 
-### Kortspel
-Välj ett valfritt kortspel, t.ex. poker eller blackjack. Du kan börja med att bara skriva ut korten med write, men sikta på att lägga in bilder på kort som spelet kan dela ut.
+```
+index.html                  Markup for toolbar, info panel, waveform
+                            editor, synths container.
+public/
+  Page.css                  Toolbar, app shell, layout.
+  Synth.css                 Synth panels, oscillator rows, sliders.
+  WaveformEditorStyle.css   Waveform editor modal.
+  InformationPanel.css      Info overlay shown by the info button.
+src/
+  main.mjs                  App entry. Wires up the audio context,
+                            the starting synth, the Add-synth button,
+                            transport (play/stop/tempo), and the
+                            global keyboard-to-note handler.
+  Synth.mjs                 Synth class: builds the DOM for a synth
+                            panel (oscillator list, reverb/distortion
+                            sliders, timeline canvas), routes audio
+                            through filter → distortion → reverb →
+                            destination, manages oscillators.
+  Oscillator.mjs            Per-oscillator helpers.
+  WaveformEditor.mjs        Modal canvas editor. Captures mouse drags
+                            into a sample buffer and converts to a
+                            periodic wave via DFT for preview/apply.
+  Timeline.mjs              Per-synth piano roll. Mouse to add/extend
+                            notes, arrow keys to scroll horizontally.
+  dft.mjs                   Discrete Fourier transform used to turn
+                            drawn waveforms into harmonic partials.
+icons/                      SVG icons for play, stop, info.
+```
 
-### Biljard/curling
-Gör ett biljard eller curling där spelare kan skjuta kulor eller stenar som kan krocka med varandra. Det kommer alltså behövas någon matematik för att räkna ut hur de studsar. Använd Sprite från balderbiblioteket.
+## Tech
 
-### Spelmotor
-Från företagsportalen kan man ladda ner spelmotorn Godot. Det är ett annat programmeringsspråk (liknar python) och en ny utvecklingsmiljö. Det finns ett kursmaterial som man kan använda, men ni behöver be om en inloggning för att komma åt den. Man kan följa exemplen i kursmaterialet eller göra något eget.
+- Vanilla HTML / CSS / ES modules — no bundler, no framework.
+- [Tone.js](https://tonejs.github.io/) for synthesis, effects, and
+  scheduling (`Tone.Synth`, `Tone.Filter`, `Tone.Distortion`,
+  `Tone.Reverb`, `Tone.Transport`, `Tone.Part`).
+- A small hand-written DFT in `src/dft.mjs` for converting
+  freehand-drawn waveforms into harmonic partials.
