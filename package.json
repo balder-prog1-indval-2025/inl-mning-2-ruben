@@ -1,0 +1,24 @@
+{
+  "name": "mjusik",
+  "version": "1.0.0",
+  "description": "A browser-based music creation tool. Draw your own oscillator waveforms, build synths from those oscillators, and arrange notes on per-synth piano rolls to compose short pieces.",
+  "homepage": "https://github.com/balder-prog1-indval-2025/inl-mning-2-ruben#readme",
+  "bugs": {
+    "url": "https://github.com/balder-prog1-indval-2025/inl-mning-2-ruben/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/balder-prog1-indval-2025/inl-mning-2-ruben.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "express": "^5.2.1"
+  }
+}

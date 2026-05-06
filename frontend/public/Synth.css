@@ -6,13 +6,13 @@
   padding: 0.5rem;
   height: auto;
   margin: 0.5rem;
-  background-color: #00000036;
+  background-color: var(--synth-outer-color);
   border-radius: 15px;
   gap: 0.5rem;
 }
 
 .Synth canvas {
-  border: 3px solid #93e4c1;
+  border: 3px solid var(--element-border-color);
   border-radius: 8px;
   background-color: #1f6f78;
   width: 100%;
@@ -23,10 +23,10 @@
 .SynthPanel {
   display: flex;
   flex-direction: column;
-  background-color: #118a7e;
+  background-color: var(--element-bg-color);
   padding: 0rem;
   border-radius: 8px;
-  border: 3px solid #93e4c1;
+  border: 3px solid var(--element-border-color);
   color: white;
   justify-content: flex-start;
   align-items: center;
@@ -37,7 +37,7 @@
 }
 
 .SynthPanel:hover {
-  background-color: #118a7eaa;
+  background-color: var(--page-element-button-hover-color);
 }
 
 .SynthPanel h2 {
@@ -54,13 +54,13 @@
 .Oscillator {
   display: flex;
   flex-direction: column;
-  background-color: #1f6f78;
+  background-color: var(--inner-element-bg-color);
   padding: 0.5rem;
   margin: 0;
   margin-top: 0.6rem;
   border-radius: 10px;
   padding: 0.5rem;
-  border: 3px solid #93e4c1;
+  border: 3px solid var(--element-border-color);
   color: white;
   justify-content: center;
   align-items: center;
@@ -74,7 +74,7 @@
 
 .Oscillator button {
   border: none;
-  background-color: #118a7e;
+  background-color: var(--element-bg-color);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 10px;
@@ -83,7 +83,7 @@
 }
 
 .Oscillator button:hover {
-  background-color: #118a7eaa;
+  background-color: var(--page-element-button-hover-color);
 }
 
 .selected .SynthPanel {
@@ -95,7 +95,7 @@
 }
 
 .SynthPanel .OscillatorButton {
-  background-color: #1f6f78;
+  background-color: var(--inner-element-bg-color);
 }
 
 .DistortionLabel {
