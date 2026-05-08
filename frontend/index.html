@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>mjusik</title>
+    <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg" />
     <link rel="stylesheet" href="./public/Page.css" />
     <link rel="stylesheet" href="./public/WaveformEditorStyle.css" />
     <link rel="stylesheet" href="./public/Synth.css" />
@@ -12,6 +13,18 @@
   <body>
     <div class="App">
       <div class="Toolbar">
+        <div class="ProjectManager">
+          <select name="ProjectSelector" id="projsele">
+            <option value="new">New Save</option>
+          </select>
+          <div class="SaveButton StoreButton">
+            <img src="./icons/save.svg" alt="save" />
+          </div>
+
+          <div class="DeleteButton StoreButton">
+            <img src="./icons/delete.svg" alt="delete" />
+          </div>
+        </div>
         <div class="MainTools">
           <h2>mjusik</h2>
           <div class="PlaybackWrapper">
@@ -85,7 +98,7 @@
     </div>
 
     <script src="http://unpkg.com/tone"></script>
-
+    <script type="module" src="./src/ProjectManagement.mjs"></script>
     <script type="module" src="./src/dft.mjs"></script>
     <script type="module" src="./src/WaveformEditor.mjs"></script>
     <script type="module" src="./src/Oscillator.mjs"></script>

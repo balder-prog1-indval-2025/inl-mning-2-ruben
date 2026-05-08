@@ -6,7 +6,7 @@ const db = new Database("mjusik.db");
 db.exec(`
     CREATE TABLE IF NOT EXISTS projects (
         id          INTEGER PRIMARY KEY AUTOINCREMENT,
-        name        TEXT NOT NULL,
+        name        TEXT NOT NULL UNIQUE,
         data        TEXT NOT NULL,
         updated_at  INTEGER NOT NULL
     )
@@ -22,16 +22,25 @@ app.post("/api/projects", (req, res) => {
   const json = JSON.stringify(data);
   const now = Date.now();
 
-  if (id) {
-    db.prepare(
-      "UPDATE projects SET name=?, data=?, updated_at=? WHERE id=?"
-    ).run(name, json, now, id);
-    res.json({ id });
-  } else {
-    const info = db
-      .prepare("INSERT INTO projects (name, data, updated_at) VALUES (?, ?, ?)")
-      .run(name, json, now);
-    res.json({ id: info.lastInsertRowid });
+  try {
+    if (id) {
+      db.prepare(
+        "UPDATE projects SET name=?, data=?, updated_at=? WHERE id=?"
+      ).run(name, json, now, id);
+      res.json({ id });
+    } else {
+      const info = db
+        .prepare(
+          "INSERT INTO projects (name, data, updated_at) VALUES (?, ?, ?)"
+        )
+        .run(name, json, now);
+      res.json({ id: info.lastInsertRowid });
+    }
+  } catch (e) {
+    if (e.code === "SQLITE_CONSTRAINT_UNIQUE") {
+      return res.status(409).json({ error: "Name already in use" });
+    }
+    throw e;
   }
 });
 
@@ -43,6 +52,20 @@ app.get("/api/projects", (req, res) => {
       )
       .all()
   );
+});
+
+app.get("/api/projects/:id", (req, res) => {
+  const row = db
+    .prepare("SELECT * FROM projects WHERE id=?")
+    .get(req.params.id);
+  if (!row) return res.status(404).end();
+  res.json({ id: row.id, name: row.name, data: JSON.parse(row.data) });
+});
+
+app.get("/api/projects/remove/:id", (req, res) => {
+  let id = req.params.id;
+  const deleteStatement = db.prepare("DELETE FROM projects WHERE id=?").run(id);
+  res.json({ deleteStatement });
 });
 
 app.listen(3000);

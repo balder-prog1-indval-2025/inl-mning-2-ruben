@@ -1,11 +1,14 @@
 import { WaveformEditor } from "./WaveformEditor.mjs";
 import { Synth } from "./Synth.mjs";
+import { loadProjects } from "./ProjectManagement.mjs";
 
 const actx = new AudioContext();
 
 const waveformEditor = new WaveformEditor(actx);
 
 waveformEditor.init();
+
+await loadProjects();
 
 function noteToFrequency(note) {
   const A4 = 440;
