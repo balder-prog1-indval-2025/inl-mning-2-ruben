@@ -1,6 +1,6 @@
 import { WaveformEditor } from "./WaveformEditor.mjs";
 import { Synth } from "./Synth.mjs";
-import { loadProjects } from "./ProjectManagement.mjs";
+import { loadProjects, setSaveData } from "./ProjectManagement.mjs";
 
 const actx = new AudioContext();
 
@@ -141,6 +141,23 @@ function timelineNoteToFreq(n) {
 const play_button = document.querySelector(".PlayButton");
 const stop_button = document.querySelector(".StopButton");
 const tempo_input = document.querySelector(".Tempo");
+
+document.querySelector(".ProjectManager").onclick = async () => {
+  setSaveData(parseFloat(tempo_input.value), synths);
+};
+
+document.querySelector(".LoadButton").onclick = async () => {
+  let project_selector_element = document.querySelector("#projsele");
+
+  let load_id =
+    project_selector_element.children[project_selector_element.selectedIndex]
+      .id;
+
+  let load_request = await fetch("/api/projects/" + load_id);
+  let result = await load_request.json();
+  console.log(synths);
+  console.log(result);
+};
 
 let parts = [];
 
