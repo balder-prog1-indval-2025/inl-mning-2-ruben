@@ -1,15 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
 
 :root {
-  --page-bg-color: #1f6f78;
-  --element-bg-color: #118a7e;
-  --element-border-color: #93e4c1;
-  --synth-outer-color: #00000036;
-  --toolbar-overlay-element-color: #1f6f7880;
+  --page-bg-color: #cecece;
+  --element-bg-color: #e7e7e7;
+  --element-border-color: #01be95;
+  --synth-outer-color: #68b4a6;
+  --toolbar-overlay-element-color: #ffffff;
   --toolbar-overlay-element-hover-color: #1e666e8c;
   --page-element-button-hover-color: #118a7eaa;
-  --inner-element-bg-color: #1f6f78;
+  --inner-element-bg-color: #ffffff;
   --inner-element-hover-bg-color: #164f55;
+  --text-color: black;
 }
 
 * {
@@ -42,7 +43,7 @@ body {
   background-color: var(--element-bg-color);
   border: 3px solid var(--element-border-color);
   border-radius: 8px;
-  color: white;
+  color: var(--text-color);
 }
 
 .SynthWrapper button:hover {
@@ -85,7 +86,7 @@ body {
 }
 
 .MainTools h2 {
-  color: white;
+  color: var(--text-color);
 }
 
 .MainTools button:hover {
@@ -131,7 +132,7 @@ body {
   width: 2rem;
   height: 2rem;
   text-align: center;
-  color: white;
+  color: var(--text-color);
   border: none;
   border-radius: 0.6rem;
 }
@@ -147,7 +148,7 @@ body {
 .Tempo {
   background-color: var(--toolbar-overlay-element-color);
   border: none;
-  color: white;
+  color: var(--text-color);
   height: 2rem;
   width: 3rem;
   padding: 0.5rem;
@@ -198,7 +199,7 @@ body {
   background-color: var(--toolbar-overlay-element-color);
   font-size: 1.2rem;
   border: none;
-  color: white;
+  color: var(--text-color);
   text-align: center;
   transition: background-color 0.1s ease;
 }

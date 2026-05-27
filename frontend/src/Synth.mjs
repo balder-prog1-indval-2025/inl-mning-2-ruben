@@ -45,6 +45,7 @@ export class Synth {
     reverb_slider.step = 0.01;
     reverb_slider.value = 0.5;
     reverb_slider.classList.add("Reverb");
+    this.reverb_slider = reverb_slider;
 
     reverb_slider.addEventListener("input", () => {
       this.reverb.wet.value = reverb_slider.value;
@@ -61,6 +62,7 @@ export class Synth {
     dist_slider.step = 0.01;
     dist_slider.value = 0.5;
     dist_slider.classList.add("Distortion");
+    this.dist_slider = dist_slider;
 
     dist_slider.addEventListener("input", () => {
       this.distortion.wet.value = dist_slider.value;
@@ -125,6 +127,7 @@ export class Synth {
       }),
       signal: partials,
       octave: 0,
+      gain: 1,
     };
     oscillator.osc.connect(this.filter);
 
@@ -145,6 +148,7 @@ export class Synth {
     osc_gain_slider.value = 1;
 
     osc_element.appendChild(osc_gain_slider);
+    oscillator.gain_slider = osc_gain_slider;
 
     const osc_octave_wrapper = document.createElement("div");
     osc_octave_wrapper.classList.add("OctaveWrapper");
@@ -171,6 +175,7 @@ export class Synth {
 
     osc_gain_slider.addEventListener("input", (event) => {
       const linear = parseFloat(osc_gain_slider.value);
+      oscillator.gain = linear;
       oscillator.osc.volume.value =
         linear > 0 ? 20 * Math.log10(linear) : -Infinity;
     });
@@ -192,5 +197,7 @@ export class Synth {
       }
       oscillator.osc.oscillator.partials = partials;
     };
+
+    return oscillator;
   }
 }

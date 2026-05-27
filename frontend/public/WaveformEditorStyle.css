@@ -23,7 +23,7 @@
   padding: 0.5rem 1rem;
   border-radius: 10px;
   font-size: large;
-  color: white;
+  color: var(--text-color);
 }
 
 .WaveformEditor button:hover {
@@ -45,7 +45,7 @@
 .WaveformEditor h2 {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: white;
+  color: var(--text-color);
 }
 
 .hide {

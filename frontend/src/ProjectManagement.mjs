@@ -60,9 +60,10 @@ saveButton.onclick = async () => {
 
 let deleteButton = document.querySelector(".DeleteButton");
 deleteButton.onclick = async () => {
+  let project_selector_element = document.querySelector("#projsele");
+  if (project_selector_element.value == "new") return;
   let koll = confirm("säker?");
   if (!koll) return;
-  let project_selector_element = document.querySelector("#projsele");
 
   let delete_id =
     project_selector_element.children[project_selector_element.selectedIndex]
@@ -80,8 +81,11 @@ export async function saveProject(project_name, id, tempo_input, synths) {
       oscillators: s.oscillators.map((o) => ({
         signal: o.signal,
         octave: o.octave,
+        gain: o.gain,
       })),
       notes: s.timeline.notes,
+      reverb: s.reverb.wet.value,
+      distortion: s.distortion.wet.value,
     })),
   };
 

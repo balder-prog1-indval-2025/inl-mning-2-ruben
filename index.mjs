@@ -68,4 +68,6 @@ app.get("/api/projects/remove/:id", (req, res) => {
   res.json({ deleteStatement });
 });
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});

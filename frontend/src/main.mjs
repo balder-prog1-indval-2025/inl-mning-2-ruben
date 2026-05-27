@@ -1,6 +1,7 @@
 import { WaveformEditor } from "./WaveformEditor.mjs";
 import { Synth } from "./Synth.mjs";
 import { loadProjects, setSaveData } from "./ProjectManagement.mjs";
+import dft from "./dft.mjs";
 
 const actx = new AudioContext();
 
@@ -149,14 +150,66 @@ document.querySelector(".ProjectManager").onclick = async () => {
 document.querySelector(".LoadButton").onclick = async () => {
   let project_selector_element = document.querySelector("#projsele");
 
+  if (project_selector_element.value == "new") {
+    return;
+  }
+
   let load_id =
     project_selector_element.children[project_selector_element.selectedIndex]
       .id;
 
   let load_request = await fetch("/api/projects/" + load_id);
   let result = await load_request.json();
-  console.log(synths);
-  console.log(result);
+  const data = result.data;
+
+  document.querySelector(".Synths").innerHTML = "";
+  synths.length = 0;
+  active_synth_id = null;
+
+  tempo_input.value = data.bpm;
+
+  for (const synthData of data.synths) {
+    const synth = new Synth(
+      actx,
+      waveformEditor,
+      synths.length + 1,
+      select_synth
+    );
+
+    if (synthData.reverb !== undefined) {
+      synth.reverb.wet.value = synthData.reverb;
+      synth.reverb_slider.value = synthData.reverb;
+    }
+    if (synthData.distortion !== undefined) {
+      synth.distortion.wet.value = synthData.distortion;
+      synth.dist_slider.value = synthData.distortion;
+    }
+
+    for (const oscData of synthData.oscillators) {
+      const osc = synth.addOscillator();
+      osc.signal = oscData.signal;
+      osc.octave = oscData.octave;
+      const { real, imag } = dft(oscData.signal);
+      const partials = [];
+      for (let i = 1; i < real.length; i++) {
+        partials.push(Math.sqrt(real[i] * real[i] + imag[i] * imag[i]));
+      }
+      osc.osc.oscillator.partials = partials;
+
+      if (oscData.gain !== undefined) {
+        osc.gain = oscData.gain;
+        osc.gain_slider.value = oscData.gain;
+        osc.osc.volume.value =
+          oscData.gain > 0 ? 20 * Math.log10(oscData.gain) : -Infinity;
+      }
+    }
+
+    synth.timeline.notes = synthData.notes;
+
+    synths.push(synth);
+  }
+
+  setSaveData(parseFloat(tempo_input.value), synths);
 };
 
 let parts = [];

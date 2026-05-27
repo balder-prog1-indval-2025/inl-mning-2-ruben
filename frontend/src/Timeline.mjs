@@ -228,7 +228,7 @@ export class Timeline {
 
     this.render_x_off = this.timeline_x_offset % (W / this.horizCount);
     //this.timeline_x_offset += 0.1;
-    console.log(this.render_x_off);
+    //console.log(this.render_x_off);
 
     for (let i = 0; i <= this.horizCount; i++) {
       this.ctx.lineWidth = 0.3;
