@@ -237,3 +237,7 @@ body {
   background-color: #d33434aa;
   cursor: pointer;
 }
+
+.ProjectManager > .ButtonDisabled:hover {
+  cursor: not-allowed;
+}

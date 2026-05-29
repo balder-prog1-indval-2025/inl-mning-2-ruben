@@ -109,7 +109,7 @@ export class Synth {
   }
 
   addOscillator() {
-    console.log(this.actx);
+    //console.log(this.actx);
 
     let partials = [0];
     for (let i = 1; i < 256; i++) {

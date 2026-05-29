@@ -1,7 +1,7 @@
 export class Timeline {
   constructor(ctx) {
     this.ctx = ctx;
-    console.log(this.ctx.canvas);
+    ////console.log(this.ctx.canvas);
 
     this.vertCount = 24;
     this.horizCount = 32;
@@ -28,7 +28,7 @@ export class Timeline {
         let new_length = distance / (this.ctx.canvas.width / this.horizCount);
 
         this.notes[this.onNoteEdge.index].length = new_length;
-        //console.log(new_length);
+        ////console.log(new_length);
 
         return;
       }
@@ -45,7 +45,7 @@ export class Timeline {
         let note_height = this.ctx.canvas.height / this.vertCount;
         if (mouse_pos.x > x - 10 && mouse_pos.x < x + 10) {
           if (mouse_pos.y > y && mouse_pos.y < y + note_height) {
-            //console.log("edge");
+            ////console.log("edge");
             this.onNoteEdge.value = true;
             this.onNoteEdge.index = i;
           }
@@ -60,13 +60,13 @@ export class Timeline {
           this.ctx.canvas.classList.remove("edit");
         }
       }
-      //console.log(this.ctx.canvas.classList);
-      //console.log(this.onNoteEdge);
+      ////console.log(this.ctx.canvas.classList);
+      ////console.log(this.onNoteEdge);
     });
 
     this.ctx.canvas.addEventListener("mousedown", (event) => {
       if (this.onNoteEdge.value) {
-        console.log("resizing");
+        //console.log("resizing");
         this.resizing_note = true;
       } else {
         this.resizing_note = false;
@@ -74,7 +74,7 @@ export class Timeline {
       const mouse_pos = this.#getMousePos(event);
 
       for (let i = 0; i < this.notes.length; i++) {}
-      console.log("mouse");
+      //console.log("mouse");
     });
 
     this.ctx.canvas.addEventListener("mouseup", (event) => {
@@ -87,7 +87,7 @@ export class Timeline {
     });
 
     this.ctx.canvas.addEventListener("click", (event) => {
-      console.log(this.resizing_note);
+      //console.log(this.resizing_note);
       if (this.onNoteEdge.value) {
         return;
       }
@@ -126,15 +126,15 @@ export class Timeline {
 
       if (add) this.notes.push({ time, note, length });
 
-      console.log(this.notes);
+      //console.log(this.notes);
 
-      //console.log(horizontal_index);
-      //console.log(vertical_index);
-      //console.log(mouse_pos);
+      ////console.log(horizontal_index);
+      ////console.log(vertical_index);
+      ////console.log(mouse_pos);
     });
 
     this.ctx.canvas.addEventListener("keydown", (event) => {
-      console.log(event.key);
+      //console.log(event.key);
       if (event.key == "ArrowRight") {
         this.target_timeline_x_offset += this.scroll_power;
       }
@@ -150,7 +150,7 @@ export class Timeline {
   resize() {
     this.ctx.canvas.width = this.ctx.canvas.clientWidth;
     this.ctx.canvas.height = this.ctx.canvas.clientHeight;
-    //console.log(this.ctx.canvas.width);
+    ////console.log(this.ctx.canvas.width);
   }
 
   #getMousePos(evt) {
@@ -228,7 +228,7 @@ export class Timeline {
 
     this.render_x_off = this.timeline_x_offset % (W / this.horizCount);
     //this.timeline_x_offset += 0.1;
-    //console.log(this.render_x_off);
+    ////console.log(this.render_x_off);
 
     for (let i = 0; i <= this.horizCount; i++) {
       this.ctx.lineWidth = 0.3;

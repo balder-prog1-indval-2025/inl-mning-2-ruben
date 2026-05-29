@@ -4,16 +4,16 @@ let synths = [];
 export function setSaveData(bpm, synths_list) {
   tempo = bpm;
   synths = synths_list;
-  console.log(tempo);
+  //console.log(tempo);
 }
 
 export async function loadProjects(id) {
   let projects_request = await fetch("/api/projects");
   let result = await projects_request.json();
-  console.log(result);
+  //console.log(result);
 
   let project_selector_element = document.querySelector("#projsele");
-  console.log(project_selector_element);
+  //console.log(project_selector_element);
   project_selector_element.innerHTML = '<option value="new">New Save</option>';
 
   let si = 0;
@@ -42,7 +42,7 @@ saveButton.onclick = async () => {
   let project_selector_element = document.querySelector("#projsele");
 
   let selected_project = project_selector_element.value;
-  console.log(selected_project);
+  //console.log(selected_project);
   if (selected_project == "new") {
     let new_project_name = prompt("Choose a project name:");
     await saveProject(new_project_name, null, tempo, synths);
@@ -109,12 +109,12 @@ export async function saveProject(project_name, id, tempo_input, synths) {
       body: fetch_body,
     });
     let result = await save.json();
-    console.log(result);
+    //console.log(result);
     if (!id) {
       id = result.id;
     }
   } catch (error) {
-    console.log("error: ", error);
+    //console.log("error: ", error);
   }
 
   await loadProjects(id);

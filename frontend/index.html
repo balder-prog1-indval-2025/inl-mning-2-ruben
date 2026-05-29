@@ -17,15 +17,21 @@
           <select name="ProjectSelector" id="projsele">
             <option value="new">New Save</option>
           </select>
-          <div class="SaveButton StoreButton">
+          <div title="Save project" class="SaveButton StoreButton">
             <img src="./icons/save.svg" alt="save" />
           </div>
 
-          <div class="LoadButton StoreButton">
+          <div
+            title="Load project"
+            class="ButtonDisabled LoadButton StoreButton"
+          >
             <img src="./icons/load.svg" alt="load" />
           </div>
 
-          <div class="DeleteButton StoreButton">
+          <div
+            title="Delete Project"
+            class="ButtonDisabled DeleteButton StoreButton"
+          >
             <img src="./icons/delete.svg" alt="delete" />
           </div>
         </div>
@@ -39,7 +45,13 @@
               <img src="./icons/stop.svg" alt="stop" />
             </button>
           </div>
-          <input type="number" class="Tempo" placeholder="BPM" value="100" />
+          <input
+            title="Project BPM"
+            type="number"
+            class="Tempo"
+            placeholder="BPM"
+            value="100"
+          />
         </div>
         <button id="infobutton">
           <img src="./icons/info.svg" alt="info" height="20" />

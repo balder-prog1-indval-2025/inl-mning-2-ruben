@@ -1,3 +1,6 @@
+todo
+klassdiagram
+
 # mjusik
 
 A browser-based music creation tool. Draw your own oscillator waveforms,
@@ -20,7 +23,7 @@ rolls to compose short pieces.
   own row of notes and plays back independently.
 - **Live keyboard playing.** Select a synth and play it from the
   computer keyboard in a piano-style layout (`A W S E D F T G Y H U J
-  K O L P` covers C4–D#5 chromatically).
+K O L P` covers C4–D#5 chromatically).
 - **Transport.** Tempo input (BPM), play, and stop buttons trigger every
   synth's timeline together via `Tone.Transport` and `Tone.Part`.
 - **In-app help.** Click the info button in the top-right of the
@@ -47,8 +50,8 @@ connection is required on first load.
 1. The app starts with one synth already created. Click on it to select
    it (it will highlight).
 2. **Draw a waveform.** Every oscillator is silent until you draw its
-   waveform. Press *Edit Waveform* on the oscillator, draw a shape on
-   the canvas, press *Preview* to hear it, then *Close* to apply.
+   waveform. Press _Edit Waveform_ on the oscillator, draw a shape on
+   the canvas, press _Preview_ to hear it, then _Close_ to apply.
 3. Play the selected synth from your keyboard, or click cells on its
    timeline to write notes.
 4. Add more oscillators (stacked into the same synth) or more synths

@@ -114,6 +114,21 @@ document.addEventListener("keydown", async (event) => {
   }
 });
 
+const project_selector_element = document.querySelector("#projsele");
+
+const load_button = document.querySelector(".LoadButton");
+const delete_button = document.querySelector(".DeleteButton");
+
+project_selector_element.addEventListener("input", (e) => {
+  if (e.target.value == "new") {
+    load_button.classList.add("ButtonDisabled");
+    delete_button.classList.add("ButtonDisabled");
+  } else {
+    load_button.classList.remove("ButtonDisabled");
+    delete_button.classList.remove("ButtonDisabled");
+  }
+});
+
 const information_panel = document.querySelector(".InformationPanel");
 
 document.querySelector("#infobutton").onclick = () => {
@@ -128,7 +143,7 @@ document
   .querySelector(".AddSynthButton")
   .addEventListener("click", async () => {
     await Tone.start();
-    console.log("audio is ready");
+    //console.log("audio is ready");
     synths[0].triggerAttackRelease("C4", "2n");
   });
 

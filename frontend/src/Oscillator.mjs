@@ -19,8 +19,8 @@ export class Oscillator {
     // default to sine wave
     const { real, imag } = dft(
       this.signal.map((_, i) =>
-        Math.sin((i / this.signal.length) * 2 * Math.PI),
-      ),
+        Math.sin((i / this.signal.length) * 2 * Math.PI)
+      )
     );
     this.wave = this.actx.createPeriodicWave(real, imag);
   }
@@ -86,13 +86,13 @@ export class Oscillator {
   octaveUp() {
     this.octave++;
     this.setFrequency(this.frequency);
-    console.log(this.octave);
+    //console.log(this.octave);
   }
 
   octaveDown() {
     this.octave--;
     this.setFrequency(this.frequency);
-    console.log(this.octave);
+    //console.log(this.octave);
   }
 
   start(time = null) {
@@ -139,11 +139,11 @@ export class Oscillator {
 
     this.gainNode.gain.setValueAtTime(
       this.gain * note.velocity,
-      time + note.duration * beatLength - 0.05,
+      time + note.duration * beatLength - 0.05
     );
     this.gainNode.gain.linearRampToValueAtTime(
       0,
-      time + note.duration * beatLength,
+      time + note.duration * beatLength
     );
 
     this.osc.connect(this.gainNode);
