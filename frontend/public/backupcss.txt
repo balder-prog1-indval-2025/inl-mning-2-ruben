@@ -1,0 +1,11 @@
+:root {
+  --page-bg-color: #1f6f78;
+  --element-bg-color: #118a7e;
+  --element-border-color: #93e4c1;
+  --synth-outer-color: #00000036;
+  --toolbar-overlay-element-color: #1f6f7880;
+  --toolbar-overlay-element-hover-color: #1e666e8c;
+  --page-element-button-hover-color: #118a7eaa;
+  --inner-element-bg-color: #1f6f78;
+  --inner-element-hover-bg-color: #164f55;
+}
